@@ -8,6 +8,8 @@
 
 An end-to-end data analysis project on Netflix's global content catalog (7,770+ titles) — covering data cleaning, exploratory data analysis, SQL querying, and an interactive dashboard to uncover trends in content type, genre, country, rating, and release patterns.
 
+   🔗 **[View Live Interactive Dashboard →](https://anjalisinghthakur.github.io/Netflix-data-analyst-project/dashboard/netflix_dashboard.html)**
+
 ---
 
 ## 📌 Project Overview
