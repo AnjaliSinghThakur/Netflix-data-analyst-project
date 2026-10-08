@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Netflix Content Analytics | Power BI</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#07070b;--pn:#13131b;--bd:#e50914;--tx:#f3f3f6;--mu:#9a9aae;--red:#e50914;--gold:#f5c518;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:#2b2b33;font-family:'Segoe UI',system-ui,Arial,sans-serif;color:var(--tx)}
+.win{max-width:1320px;margin:12px auto;border-radius:8px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.7);background:#f3f2f1}
+.tb{background:#fff;color:#333;font-size:11px;padding:5px 10px;display:flex;justify-content:space-between;border-bottom:1px solid #ddd}
+.mn{background:#fff;color:#333;font-size:12px;padding:4px 10px;display:flex;gap:16px;border-bottom:1px solid #ddd;overflow:auto;white-space:nowrap}.mn b{color:#c8102e;border-bottom:2px solid #c8102e}
+.rb{background:#faf9f8;color:#555;font-size:10px;padding:6px 10px;display:flex;gap:18px;border-bottom:1px solid #ddd;overflow:auto;white-space:nowrap}.rb span:before{content:"▣ ";font-size:14px;color:#777}
+.rep{display:flex;background:radial-gradient(circle at 70% 0,#2a0a10,var(--bg) 55%);min-height:640px}
+nav{width:178px;flex:none;padding:14px 10px;background:linear-gradient(180deg,#1a0508,#0b0b10);border-right:1px solid #3a0d12}
+nav .lg{font-weight:900;letter-spacing:3px;color:var(--red);font-size:20px;text-shadow:0 2px 0 #6a0409,0 6px 14px rgba(229,9,20,.5);margin:2px 6px 16px}
+nav a{display:flex;gap:9px;align-items:center;padding:10px;margin-bottom:6px;border-radius:8px;font-size:12px;color:#cfcfdc;cursor:pointer;border:1px solid transparent}
+nav a.on{background:linear-gradient(180deg,#ff4b55,#b0070f);color:#fff;box-shadow:0 4px 0 #5c0306,0 8px 14px rgba(229,9,20,.35)}
+nav a:hover:not(.on){border-color:#4a1218}
+main{flex:1;padding:14px 16px;min-width:0}
+.hd{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.hd h1{margin:0;font-size:20px}.hd small{color:var(--mu);font-size:12px}
+.sl button{background:#1d1d29;color:var(--tx);border:1px solid #333;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;margin-left:5px}.sl .on{background:var(--red);border-color:var(--red)}
+.pg{display:none;grid-template-columns:repeat(12,1fr);gap:12px}.pg.on{display:grid}
+.p{background:linear-gradient(145deg,#1b1b27,var(--pn));border:1px solid var(--bd);border-radius:10px;padding:10px 12px;box-shadow:0 1px 0 #4a4a5c inset,0 5px 0 #05050a,0 14px 24px rgba(0,0,0,.6);transition:transform .2s}
+.p h4{margin:0 0 6px;font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.6px}
+.k{grid-column:span 3;text-align:center}.k .v{font-size:32px;font-weight:800;background:linear-gradient(#fff,#ff9ba1);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 5px rgba(229,9,20,.5))}.k .d{font-size:11px;color:var(--mu)}
+.s8{grid-column:span 8}.s4{grid-column:span 4}.s6{grid-column:span 6}.s12{grid-column:span 12}
+.cv{position:relative;height:230px}
+.ki{font-size:12.5px;line-height:1.75;color:#d6d6e2;margin:0;padding-left:16px}.ki b{color:var(--gold)}
+.pt{background:#f3f2f1;display:flex;gap:2px;padding:0 8px;border-top:1px solid #ccc;overflow:auto;white-space:nowrap}
+.pt a{padding:7px 14px;font-size:11px;color:#444;cursor:pointer}.pt a.on{background:#fff;border-bottom:2px solid #c8102e;font-weight:700;color:#000}
+@media(max-width:860px){.rep{flex-direction:column}nav{width:100%;display:flex;overflow:auto;gap:6px;padding:8px}nav .lg{display:none}nav a{white-space:nowrap;margin:0}.k{grid-column:span 6}.s8,.s4,.s6{grid-column:span 12}}
+</style></head><body><div class="win">
+<div class="tb"><span>Netflix_Content_Analytics - Power BI Desktop</span><span>Sign in</span></div>
+<div class="mn"><span>File</span><b>Home</b><span>Insert</span><span>Modeling</span><span>View</span><span>Optimize</span><span>Help</span></div>
+<div class="rb"><span>Get data</span><span>Excel</span><span>SQL Server</span><span>Transform</span><span>Refresh</span><span>New visual</span><span>Text box</span><span>New measure</span><span>Publish</span></div>
+<div class="rep">
+<nav><div class="lg">NETFLIX</div>
+<a class="on" data-p="0">📊 Overview</a><a data-p="1">🎭 Genre &amp; Content</a><a data-p="2">🌍 Country Analysis</a><a data-p="3">📅 Release Timeline</a><a data-p="4">⭐ Executive Summary</a></nav>
+<main>
+<div class="hd"><div><h1 id="ttl">Netflix Content Overview</h1><small>Catalog analytics &middot; 7,770 titles &middot; Python + SQL + Power BI</small></div>
+<div class="sl" id="sl"><button class="on" data-t="all">All</button><button data-t="m">Movies</button><button data-t="t">TV Shows</button></div></div>
+
+<section class="pg on" id="pg0">
+<div class="p k"><h4>Total Titles</h4><div class="v">7,770</div><div class="d">Cleaned catalog</div></div>
+<div class="p k"><h4>Movies</h4><div class="v">69.1%</div><div class="d">5,372 titles</div></div>
+<div class="p k"><h4>TV Shows</h4><div class="v">30.9%</div><div class="d">2,398 titles</div></div>
+<div class="p k"><h4>Countries</h4><div class="v">81</div><div class="d">Avg movie 99 min</div></div>
+<div class="p s8"><h4>Titles Added per Year</h4><div class="cv"><canvas id="yr"></canvas></div></div>
+<div class="p s4"><h4>Type Distribution</h4><div class="cv"><canvas id="dn"></canvas></div></div>
+<div class="p s12"><h4>Key Insights</h4><ul class="ki"><li><b>Movies dominate</b> (69%), but TV Show share has grown since 2016.</li><li><b>2019</b> was the peak year with 2,153 additions, followed by a slowdown.</li><li><b>December</b> sees the most additions: timed for holiday viewing.</li></ul></div>
+</section>
+
+<section class="pg" id="pg1">
+<div class="p s6"><h4>Top 8 Genres</h4><div class="cv"><canvas id="ge"></canvas></div></div>
+<div class="p s6"><h4>Content Rating Mix</h4><div class="cv"><canvas id="rt"></canvas></div></div>
+<div class="p s12"><h4>Key Insights</h4><ul class="ki"><li><b>Dramas</b> lead with 1,383 titles, then Comedies (1,074) and Documentaries (751).</li><li><b>TV-MA</b> is the top rating (2,861): the catalog skews to mature audiences.</li></ul></div>
+</section>
+
+<section class="pg" id="pg2">
+<div class="p s8"><h4>Top 8 Countries by Titles</h4><div class="cv"><canvas id="ct"></canvas></div></div>
+<div class="p s4"><h4>Share of Top 3</h4><div class="cv"><canvas id="c3"></canvas></div></div>
+<div class="p s12"><h4>Key Insights</h4><ul class="ki"><li><b>United States</b> leads by far with 2,874 titles.</li><li><b>India</b> (956) and the <b>UK</b> (576) follow: Netflix is globalizing but still US-heavy.</li></ul></div>
+</section>
+
+<section class="pg" id="pg3">
+<div class="p s6"><h4>Yearly Trend (Movies vs TV)</h4><div class="cv"><canvas id="ln"></canvas></div></div>
+<div class="p s6"><h4>Monthly Additions</h4><div class="cv"><canvas id="mo"></canvas></div></div>
+<div class="p s12"><h4>Key Insights</h4><ul class="ki"><li>Additions rose sharply from 2016 and peaked in <b>2019</b>.</li><li><b>Oct&ndash;Jan</b> is the busiest window; <b>February</b> is the slowest month.</li></ul></div>
+</section>
+
+<section class="pg" id="pg4">
+<div class="p s12"><h4>Executive Summary</h4><ul class="ki" style="font-size:14px;line-height:2"><li><b>7,770</b> titles across <b>81</b> producing countries analyzed (cleaned from 7,787).</li><li>Movies 69% / TV Shows 31%. TV Show additions grew from 184 (2016) to 697 (2020); share dipped to 25.5% in 2018, then recovered to 34.7% in 2020.</li><li>US is #1 producer (2,874); India #2 (956).</li><li>Top genre: <b>Dramas</b>. Top rating: <b>TV-MA</b>.</li><li>Peak year <b>2019</b>; peak month <b>December</b>.</li><li><b>Recommendation:</b> invest in international TV and family content to diversify beyond mature US catalog.</li></ul></div>
+<div class="p s6"><h4>Tools</h4><div class="ki" style="padding:0">Python &middot; Pandas &middot; SQL (CTEs, window functions) &middot; Power BI &middot; DAX</div></div>
+<div class="p s6"><h4>Data Source</h4><div class="ki" style="padding:0">Kaggle: Netflix Movies &amp; TV Shows dataset</div></div>
+</section>
+</main></div>
+<div class="pt" id="pt"><a class="on" data-p="0">Overview</a><a data-p="1">Genre &amp; Content</a><a data-p="2">Country Analysis</a><a data-p="3">Release Timeline</a><a data-p="4">Executive Summary</a></div>
+</div>
+<script>
+Chart.defaults.color='#9a9aae';Chart.defaults.font.family="'Segoe UI',system-ui,Arial";
+const G='rgba(255,255,255,.07)',mo=m=>({maintainAspectRatio:false,plugins:{legend:{display:m,position:'bottom'}}});
+const sh={id:'sh',beforeDatasetsDraw(c){c.ctx.save();c.ctx.shadowColor='rgba(0,0,0,.7)';c.ctx.shadowBlur=12;c.ctx.shadowOffsetY=7},afterDatasetsDraw(c){c.ctx.restore()}};
+const Y=[2013,2014,2015,2016,2017,2018,2019,2020,2021],MV=[6,19,58,256,861,1255,1497,1312,88],TV=[5,6,30,184,361,429,656,697,29];
+const gr=(c,a,b)=>{const g=c.createLinearGradient(0,0,0,240);g.addColorStop(0,a);g.addColorStop(1,b);return g};
+const ax=(x,y,o={})=>({scales:{x:{grid:x?{color:G}:{display:false},...o.x},y:{grid:y?{color:G}:{display:false},...o.y}}});
+const built={};let yr;
+const B={
+0(){const c=document.getElementById('yr').getContext('2d');
+yr=new Chart(c,{type:'bar',data:{labels:Y,datasets:[{label:'Movies',data:MV,backgroundColor:gr(c,'#ff4b55','#6a0409'),borderRadius:5,stack:'a'},{label:'TV Shows',data:TV,backgroundColor:gr(c,'#fff','#80808f'),borderRadius:5,stack:'a'}]},options:{...mo(true),scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:G}}}},plugins:[sh]});
+new Chart(document.getElementById('dn'),{type:'doughnut',data:{labels:['Movies','TV Shows'],datasets:[{data:[5372,2398],backgroundColor:['#e50914','#f3f3f6'],borderColor:'#13131b',borderWidth:4,hoverOffset:12}]},options:{...mo(true),cutout:'62%'},plugins:[sh]})},
+1(){const c=document.getElementById('ge').getContext('2d');
+new Chart(c,{type:'bar',data:{labels:['Dramas','Comedies','Documentaries','Action & Adv.','Intl TV','Family Movies','Crime TV',"Kids' TV"],datasets:[{data:[1383,1074,751,721,689,502,369,356],backgroundColor:gr(c,'#ff4b55','#6a0409'),borderRadius:5}]},options:{...mo(false),indexAxis:'y',...ax(1,0)},plugins:[sh]});
+new Chart(document.getElementById('rt'),{type:'doughnut',data:{labels:['TV-MA','TV-14','TV-PG','R','PG-13','TV-Y'],datasets:[{data:[2861,1928,804,665,386,279],backgroundColor:['#e50914','#ff4b55','#8a060c','#f5c518','#46d369','#5aa9ff'],borderColor:'#13131b',borderWidth:3,hoverOffset:10}]},options:{maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{boxWidth:10}}}},plugins:[sh]})},
+2(){const c=document.getElementById('ct').getContext('2d');
+new Chart(c,{type:'bar',data:{labels:['United States','India','United Kingdom','Canada','Japan','France','South Korea','Spain'],datasets:[{data:[2874,956,576,259,235,196,194,168],backgroundColor:gr(c,'#ff4b55','#6a0409'),borderRadius:5}]},options:{...mo(false),...ax(0,1)},plugins:[sh]});
+new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:['US','India','UK','Others'],datasets:[{data:[2874,956,576,3364],backgroundColor:['#e50914','#ff4b55','#f5c518','#3a3a4c'],borderColor:'#13131b',borderWidth:3}]},options:{...mo(true),cutout:'58%'},plugins:[sh]})},
+3(){new Chart(document.getElementById('ln'),{type:'line',data:{labels:Y,datasets:[{label:'Movies',data:MV,borderColor:'#ff4b55',tension:.4,borderWidth:3},{label:'TV Shows',data:TV,borderColor:'#fff',tension:.4,borderWidth:3}]},options:{...mo(true),...ax(0,1)},plugins:[sh]});
+const c=document.getElementById('mo').getContext('2d');
+new Chart(c,{type:'bar',data:{labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],datasets:[{data:[756,471,668,600,543,542,600,617,618,785,738,832],backgroundColor:gr(c,'#ff4b55','#6a0409'),borderRadius:5}]},options:{...mo(false),...ax(0,1)},plugins:[sh]})}};
+const T=['Netflix Content Overview','Genre & Content Analysis','Country Analysis','Release Timeline','Executive Summary'];
+function go(i){document.querySelectorAll('.pg').forEach((e,k)=>e.classList.toggle('on',k==i));
+document.querySelectorAll('nav a,#pt a').forEach(a=>a.classList.toggle('on',a.dataset.p==i));
+document.getElementById('ttl').textContent=T[i];document.getElementById('sl').style.visibility=i==0?'visible':'hidden';
+if(B[i]&&!built[i]){built[i]=1;B[i]()}}
+document.querySelectorAll('nav a,#pt a').forEach(a=>a.onclick=()=>go(+a.dataset.p));
+document.querySelectorAll('#sl button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#sl button').forEach(x=>x.classList.remove('on'));b.classList.add('on');yr.data.datasets[0].hidden=b.dataset.t=='t';yr.data.datasets[1].hidden=b.dataset.t=='m';yr.update()});
+if(matchMedia('(hover:hover)').matches)document.querySelectorAll('.p').forEach(c=>{c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(900px) rotateX(${-y*4}deg) rotateY(${x*5}deg) translateZ(4px)`});c.addEventListener('mouseleave',()=>c.style.transform='')});
+go(0);
+</script></body></html>
