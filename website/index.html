@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamFlix — Netflix Data Explorer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="logo" href="#">STREAM<span>FLIX</span></a>
+    <nav><a href="#home">Home</a><a href="#browse">Browse</a><a href="#analytics">Analytics</a><a href="#my-list">My List</a></nav>
+    <div class="nav-actions"><button id="searchBtn" aria-label="Search">⌕</button><button id="profileBtn" class="profile">A</button></div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">YOUR PERSONAL STREAMING EXPLORER</p>
+        <h1>Find your next<br><strong>great story.</strong></h1>
+        <p class="hero-copy">Explore thousands of movies and TV shows from the Netflix titles dataset. Search, filter, save and discover.</p>
+        <div class="hero-actions"><a href="#browse" class="primary">Start Browsing</a><button id="randomBtn" class="secondary">Surprise Me</button></div>
+      </div>
+    </section>
+
+    <section id="browse" class="section browse-section">
+      <div class="section-head"><div><p class="eyebrow">DISCOVER</p><h2>Browse the library</h2></div><span id="resultCount" class="muted"></span></div>
+      <div class="filters">
+        <label class="search"><span>⌕</span><input id="searchInput" placeholder="Search titles, actors, directors..." autocomplete="off"></label>
+        <select id="typeFilter"><option value="">All types</option><option>Movie</option><option>TV Show</option></select>
+        <select id="genreFilter"><option value="">All genres</option></select>
+        <select id="yearFilter"><option value="">All years</option></select>
+        <select id="countryFilter"><option value="">All countries</option></select>
+        <button id="clearFilters" class="clear">Clear</button>
+      </div>
+      <div id="grid" class="grid"></div>
+      <button id="loadMore" class="load-more">Load more</button>
+    </section>
+
+    <section id="my-list" class="section dark-section">
+      <div class="section-head"><div><p class="eyebrow">SAVED</p><h2>My List</h2></div></div>
+      <div id="myListGrid" class="grid"></div><p id="emptyList" class="empty">Your list is empty. Click the + on a title to save it here.</p>
+    </section>
+
+    <section id="analytics" class="section analytics">
+      <div class="section-head"><div><p class="eyebrow">DATA ANALYTICS</p><h2>Netflix at a glance</h2></div></div>
+      <div class="stats"><div><b id="totalStat">—</b><span>Total titles</span></div><div><b id="movieStat">—</b><span>Movies</span></div><div><b id="showStat">—</b><span>TV Shows</span></div><div><b id="yearStat">—</b><span>Latest release</span></div></div>
+      <div class="chart-card"><h3>Titles added by release year</h3><canvas id="yearChart"></canvas></div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal hidden"><div class="modal-backdrop" data-close></div><article class="details"><button class="close" data-close>×</button><div id="detailContent"></div></article></div>
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
